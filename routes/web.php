@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+//products
 Route::get('/boutique','ProductController@index')->name('products.index');
 Route::get('/boutique/{slug}','ProductController@show')->name('products.show');
+
+
+//cart
+
+Route::post('/panier/ajouter','CartController@store')->name('cart.store');
