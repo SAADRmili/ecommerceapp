@@ -21,7 +21,7 @@
 <link rel="icon" href="/docs/4.5/assets/img/favicons/favicon.ico">
 <meta name="msapplication-config" content="/docs/4.5/assets/img/favicons/browserconfig.xml">
 <meta name="theme-color" content="#563d7c">
-
+@yield('extra-meta')
 @yield('extra-script')
     <style>
       .bd-placeholder-img {
