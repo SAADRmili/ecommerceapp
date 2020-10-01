@@ -13,7 +13,7 @@
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-            <button type="submit" class="btn btn-dark">Ajouter au panier</button>
+            <button type="submit" class="btn btn-dark"><i class="fa fa-shopping-bag" aria-hidden="true"></i> Ajouter au panier</button>
         </form>
       </div>
       <div class="col-auto d-none d-lg-block">

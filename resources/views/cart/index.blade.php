@@ -1,5 +1,8 @@
 @extends('layouts.master')
 
+@section('extra-meta')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
 
 @section('content')
 
@@ -44,8 +47,14 @@
                             </div>
                           </div>
                         </th>
-                        <td class="border-0 align-middle"><strong>{{ $product->model->getFrenchPrice() }}</strong></td>
-                        <td class="border-0 align-middle"><strong>3</strong></td>
+                        <td class="border-0 align-middle"><strong>{{ getPrice($product->subtotal()) }}</strong></td>
+                        <td class="border-0 align-middle"><strong>
+                            <select name="qty" id="qty" data-id="{{ $product->rowId }}" class="custom-select">
+                                @for ($i = 1; $i <=  6; $i++)
+                                    <option value="{{ $i }}"  {{ $i== $product->qty ? 'selected' :'' }}>{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </strong></td>
                         <td class="border-0 align-middle">
 
                             <form action="{{ route("cart.destroy",$product->rowId) }}" method="POST">
@@ -111,4 +120,40 @@
     @endif
 
 
+@endsection
+
+
+@section('extra-js')
+    <script>
+           var selects =  document.querySelectorAll('#qty');
+           Array.from(selects).forEach((element)=>{
+                element.addEventListener('change',function(){
+                    var rowId = this.getAttribute('data-id');
+                    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                    fetch(
+                        `panier/${rowId}`,
+                        {
+                            headers:{
+                                "Content-Type": "application/json",
+                                "Accept": "application/json, text-plain, */*",
+                                "X-Requested-With": "XMLHttpRequest",
+                                "X-CSRF-TOKEN": token
+                            },
+                            method:'PATCH',
+                            body:JSON.stringify({
+                                qty:this.value
+                            }),
+                        })
+                        .then((data)=>{
+                            console.log(data);
+                            location.reload();
+                        }).catch((error)=>{
+                            console.log(error)
+                        });
+                });
+           });
+
+
+    </script>
 @endsection
