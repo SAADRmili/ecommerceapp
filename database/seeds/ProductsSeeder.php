@@ -21,10 +21,11 @@ class ProductsSeeder extends Seeder
                 'subtitle'=>$faker->sentence(5),
                 'description'=>$faker->text(),
                 'price'=>$faker->numberBetween(15,300)*100,
-                'image'=>'https://via.placeholder.com/200x250
+                'image'=>'https://via.placeholder.com/200x250'
 
-                '
-
+            ])->categories()->attach([
+                rand(1,4),
+                rand(1,4)
             ]);
         }
     }

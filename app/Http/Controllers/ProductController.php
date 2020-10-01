@@ -13,8 +13,15 @@ class ProductController extends Controller
      {
          # code...
          //dd(Cart::content());
-         $products = Product::inRandomOrder()->take(6)->get();
 
+         if(request()->categorie)
+         {
+            $products = Product::with('categories')->whereHas('categories',function($q){
+                $q->where('slug',request()->categorie);
+            })->paginate(6);
+         }else{
+         $products = Product::with('categories')->paginate(6);
+         }
          return  view('products.index')->with('products',$products);
      }
 

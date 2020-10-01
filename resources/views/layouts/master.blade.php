@@ -173,12 +173,11 @@ h1, h2, h3, h4, h5, h6 {
 
   <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
-      <a class="p-2 text-muted" href="#">World</a>
-      <a class="p-2 text-muted" href="#">U.S.</a>
-      <a class="p-2 text-muted" href="#">Technology</a>
-      <a class="p-2 text-muted" href="#">Design</a>
-      <a class="p-2 text-muted" href="#">Culture</a>
-      <a class="p-2 text-muted" href="#">Business</a>
+
+        @foreach (App\Category::all() as $category)
+                 <a class="p-2 text-muted" href="{{ route('products.index',['categorie'=>$category->slug]) }}">{{ $category->name }}</a>
+        @endforeach
+
     </nav>
   </div>
   @if (session('success'))
