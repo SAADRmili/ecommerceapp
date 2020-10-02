@@ -77,11 +77,11 @@ class CheckoutController extends Controller
         {
             $products['product_'.$i][] = $product->model->title;
             $products['product_'.$i][] = $product->model->price;
-            $products['product_'.$i][] = $product->model->qty;
+            $products['product_'.$i][] = $product->qty;
             $i++;
         }
         $order->products = serialize($products);
-        $order->user_id = 15;
+        $order->user_id = Auth()->user()->id;
         $order->save();
 
         if($data['paymentIntent']['status']==='succeeded')
