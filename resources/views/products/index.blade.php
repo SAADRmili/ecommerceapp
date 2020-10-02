@@ -15,7 +15,7 @@
         <a href="{{ route('products.show',$product->slug) }}" class="btn btn-info stretched-link">Voir l'article</a>
       </div>
       <div class="col-auto d-none d-lg-block">
-        <img src="{{ $product->image }}" alt="{{ $product->title }}">
+        <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->title }}" width="250" height="200">
     </div>
     </div>
   </div>
