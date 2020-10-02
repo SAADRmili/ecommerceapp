@@ -17,6 +17,7 @@ Route::get('/','ProductController@index');
 Route::get('/boutique','ProductController@index')->name('products.index');
 Route::get('/boutique/{slug}','ProductController@show')->name('products.show');
 
+Route::get('/search','ProductController@search' )->name('products.search');
 
 //cart
 Route::get('/panier','CartController@index')->name('cart.index');
@@ -28,7 +29,6 @@ Route::delete('/panier/{rowId}','CartController@destroy')->name('cart.destroy');
 // Route::get('/videpanier',function(){
 //     Cart::destroy();
 // });
-
 
 //checkout
 
