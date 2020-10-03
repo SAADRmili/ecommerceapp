@@ -103,7 +103,14 @@ form.addEventListener('submit', function(ev) {
                 })
             }
         ).then((data)=>{
-            console.log(data)
+
+            if(data.status==400)
+            {
+               var redirect = '/';
+            }else{
+                var redirect = '/merci';
+            }
+          //  console.log(data)
            window.location.href = redirect;
         }).catch((error)=>{
             console.log(error)

@@ -54,7 +54,7 @@
                         </th>
                         <td class="border-0 align-middle"><strong>{{ getPrice($product->subtotal()) }}</strong></td>
                         <td class="border-0 align-middle"><strong>
-                            <select name="qty" id="qty" data-id="{{ $product->rowId }}" class="custom-select">
+                            <select name="qty" id="qty" data-id="{{ $product->rowId }}" data-stock="{{ $product->model->stock }}" class="custom-select">
                                 @for ($i = 1; $i <=  6; $i++)
                                     <option value="{{ $i }}"  {{ $i== $product->qty ? 'selected' :'' }}>{{ $i }}</option>
                                 @endfor
@@ -119,7 +119,9 @@
   </div>
     @else
     <div class="col-md-12">
-        <p>Voter panier est vide.</p>
+        <h5>Votre panier est vide pour le moment.</h5>
+        <p>Mais vous pouvez visiter la <a href="{{ route('products.index') }}">boutique</a> pour faire votre shopping.
+        </p>
     </div>
 
     @endif
@@ -134,6 +136,7 @@
            Array.from(selects).forEach((element)=>{
                 element.addEventListener('change',function(){
                     var rowId = this.getAttribute('data-id');
+                    var stock = this.getAttribute('data-stock');
                     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
                     fetch(
@@ -147,7 +150,8 @@
                             },
                             method:'PATCH',
                             body:JSON.stringify({
-                                qty:this.value
+                                qty:this.value,
+                                stock:stock
                             }),
                         })
                         .then((data)=>{

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     //
+    protected $fillable = ['stock'];
     public function getFrenchPrice()
     {
        $price= $this->price /100;

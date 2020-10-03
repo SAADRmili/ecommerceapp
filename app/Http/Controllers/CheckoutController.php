@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\Product;
 use DateTime;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Stripe\Stripe;
@@ -64,6 +65,12 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         //
+
+        if($this->checkIfNotAvailable())
+        {
+                Session::flash('error','Un produit dans dans votre panier n\'est plus disponible');
+                return response()->json(['success'=>false],400);
+        }
         $data = $request->json()->all();
         $order  = new Order();
         $order->payment_intent_id = $data['paymentIntent']['id'];
@@ -86,6 +93,7 @@ class CheckoutController extends Controller
 
         if($data['paymentIntent']['status']==='succeeded')
         {
+            $this->updatestock();
             Cart::destroy();
             Session::flash('success','Votre commande a ete traitee avec succes.');
             return response()->json(['success'=>'Payment Intent Succeeded']);
@@ -96,7 +104,28 @@ class CheckoutController extends Controller
 
     }
 
+    private function  updatestock(){
+        foreach (Cart::content() as $item)
+        {
+            $product = Product::find($item->model->id);
 
+            $product->update(['stock'=> $product->stock - $item->qty]);
+        }
+    }
+
+    private function checkIfNotAvailable()
+    {
+        foreach (Cart::content() as $item){
+            $product = Product::find($item->model->id);
+
+            if($product->stock < $item->qty)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
     public function thankyou()
     {
         # code...
