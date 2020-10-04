@@ -30,9 +30,18 @@ class CheckoutController extends Controller
 
 
         Stripe::setApiKey('sk_test_51HX7nULHbUnW8P4V0PDdPSkBt9sING47lxFQ9YjjuD0rhQDKBuE08hCok7qRTgi6D7cSoUwwMM3ADqNJW6wMqBjC00fCAElUiD'
-    );
+            );
+
+            if(request()->session()->has('coupon'))
+
+            {
+                $total = (Cart::subtotal()-request()->session()->get('coupon')['remise'])*(config('cart.tax')/100)+(Cart::subtotal()-request()->session()->get('coupon')['remise']);
+            }
+            else{
+                $total = Cart::total();
+            }
     $intent = PaymentIntent::create([
-        'amount' => round( Cart::total()),
+        'amount' => round($total ),
         'currency' => 'eur',
         // 'metaData'=>[
         //     'userId'=>15
@@ -42,7 +51,8 @@ class CheckoutController extends Controller
       $clientSecret = Arr::get($intent,'client_secret');
 
         return view('checkout.index',[
-            'clientSecret'=>$clientSecret
+            'clientSecret'=>$clientSecret,
+            'total'=>$total
         ]);
     }
 

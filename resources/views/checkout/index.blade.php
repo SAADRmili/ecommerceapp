@@ -24,7 +24,7 @@
                 <div id="card-errors" role="alert"></div>
 
                 <button class="btn btn-success btn-block mt-3" id="submit">
-                    <i class="fa fa-credit-card" aria-hidden="true"></i> Payer maintenant ({{ getPrice(Cart::total()) }})
+                    <i class="fa fa-credit-card" aria-hidden="true"></i> Payer maintenant ({{ getPrice($total) }})
                 </button>
             </form>
         </div>
